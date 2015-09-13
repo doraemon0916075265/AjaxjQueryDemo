@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>AjaxRRS</title>
+</head>
+<body>
+
+	<div id="div01"></div>
+
+	<script type="text/javascript">
+		var xmlHttp = null;
+		var datas = null;
+		var div01 = document.getElementById("div01");
+		window.addEventListener("load", fun01, false);
+
+		function fun01() {
+			xmlHttp = new XMLHttpRequest();
+			if (xmlHttp != null) {
+				// 				alert("funbtn01");
+				xmlHttp.addEventListener("readystatechange", fun02);
+				xmlHttp.open("get", "LoadRSS.jsp", true);
+				xmlHttp.send();
+			} else {
+				alert("請升級您的瀏覽器!!!");
+			}
+		}
+
+		function fun02() {
+			if (xmlHttp.readyState == 4) {
+				if (xmlHttp.status == 200) {
+					datas = xmlHttp.responseXML;
+					var item = datas.getElementsByTagName("item");
+					for (var i = 0, max = item.length; i < max; i++) {
+
+						var eletitle = datas.getElementsByTagName("title")[i].firstChild.nodeValue;
+						var elepubDate = datas.getElementsByTagName("pubDate")[i].childNodes[0].nodeValue;
+						var eledescription = datas.getElementsByTagName("description")[i].childNodes[0].nodeValue;
+
+						//<h4>桃園象猿雙重賽　場地泥濘午場順延</h4>
+						var title01 = document.createElement("h4");
+						var txt01 = document.createTextNode(eletitle);
+						title01.appendChild(txt01);
+
+						//<h6>Sun, 30 Aug 2015 11:00:00 +0800</h6>
+						var pubDate01 = document.createElement("h6");
+						date01 = document.createTextNode(elepubDate);
+						pubDate01.appendChild(date01);
+
+						//<h5> 詳全文 </h5>
+						var description01 = document.createElement("h5");
+						description01.innerHTML = eledescription;
+
+						//分隔線
+						var line = document.createElement("hr");
+
+						//<div>這是最大的div
+						div01.appendChild(title01);
+						div01.appendChild(pubDate01);
+						div01.appendChild(description01);
+						div01.appendChild(line);
+					}
+
+				} else {
+					document.write(xmlHttp.status + " - " + xmlHttp.statusText);
+				}
+			}
+		}
+	</script>
+</body>
+</html>

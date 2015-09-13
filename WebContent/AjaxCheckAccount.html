@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>AjaxCheckAccount</title>
+<style type="text/css">
+#sp1 {
+	display: none;
+}
+</style>
+</head>
+<body>
+
+	<form action="#">
+		<fieldset>
+			<legend> 資料表 </legend>
+			<div>
+				<label>帳號 : </label> <input type="text" id="IDaccount" name="IDaccount" size="20" autofocus="autofocus" placeholder="請輸入帳號" autocomplete="off" /> <input type="button" value="檢查帳號" id="button" /><span id="sp1" style="color: blue;">&nbsp;<img src="images/waiting.gif" width="12px" />&nbsp;檢查中
+				</span> <span id="answer" style="color: red;"></span> <br /> <br />
+			</div>
+			<div>
+				<label class="formtitle">密碼 : </label> <input type="password" id="Password" name="Password" autofocus="autofocus" placeholder="請輸入密碼" size="20" /> <br /> <br />
+			</div>
+			<div>
+				<label class="formtitle"> 信箱 :</label> <input type="text" id="date" name="date" autofocus="autofocus" placeholder="ex:xxx@xxx.com" />
+			</div>
+			<br />
+			<div>
+				<input type="reset" value="清除" id="button01" /> <input type="submit" value="送出" id="button02" />
+			</div>
+		</fieldset>
+	</form>
+
+	<script type="text/javascript">
+		var ID = document.getElementById("IDaccount");
+		var enterData = document.getElementById("button");
+		var answerData = document.getElementById("answer");
+		var spanData = document.getElementById("sp1");
+		enterData.addEventListener("click", fCheckID);
+
+		var xmlHttp = null;
+
+		function fCheckID() {
+			//alert(ID.value);
+
+			var URL = "Pages/AccountCheck.jsp?name=" + ID.value;
+			//alert(URL);
+			xmlHttp = new XMLHttpRequest();
+			if (xmlHttp != null) {
+				xmlHttp.addEventListener("readystatechange", callback);
+				xmlHttp.open("Get", URL, true);
+				xmlHttp.send();
+			} else {
+				alert("您的瀏覽器不支援");
+			}
+		}
+
+		function callback() {
+			if (xmlHttp.readyState == 1) {
+				answerData.style.display = "none";
+				spanData.style.display = "inline";
+			} else if (xmlHttp.readyState == 4) {
+				answerData.style.display = "inline";
+				spanData.style.display = "none";
+				if (xmlHttp.status == 200) {
+					var output = xmlHttp.responseText;
+					answerData.innerHTML = output;
+				} else {
+					answerData.innerHTML = xmlHTTP.status + ":" + xmlHTTP.statusText;
+				}
+			}
+		}
+	</script>
+
+</body>
+</html>

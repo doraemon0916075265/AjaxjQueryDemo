@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>AjaxAutoComplete</title>
+<style type="text/css">
+#button01 {
+	width: 50px;
+}
+
+#span01 {
+	display: none;
+}
+
+#text01 {
+	width: 300px
+}
+
+#div01 {
+	border: 1px solid black;
+	width: 301.5px;
+	display: none;
+	color: blue;
+}
+
+ul {
+	list-style-type: none;
+	padding: 5px 5px;
+	margin: 0px
+}
+
+.s1 {
+	background-color: gray;
+	cursor: pointer;
+	text-decoration: blink;
+}
+
+.s2 {
+	background-color: transparent;
+}
+</style>
+</head>
+<body>
+	<form name="formData01" action="JsonSimpleDemo" method="get">
+		<input type="text" id="text01" name="keyword" autocomplete="off" /> <input type="submit" id="button01" value="查詢" /> <span id="span01"> <img src="images/waiting.gif" width="12px">
+		</span>
+		<div id="div01"></div>
+
+	</form>
+
+	<script type="text/javascript">
+		var xmlHttp = null;
+		var text01 = document.getElementById("text01");
+		var span01 = document.getElementById("span01");
+
+		var div01 = document.getElementById("div01");
+		var button01 = document.getElementById("button01");
+
+		text01.addEventListener("keyup", funbtn01);
+		button01.addEventListener("click", funbtn01);
+
+		function funbtn01() {
+			var datas = null;
+			var URL = "JsonSimpleDemo?keyword=" + text01.value;
+			//alert(URL);
+			xmlHttp = new XMLHttpRequest();
+			if (xmlHttp != null) {
+				//alert("funbtn01");
+				xmlHttp.addEventListener("readystatechange", chkfbtn01);
+				xmlHttp.open("get", URL, true);
+				xmlHttp.send();
+			} else {
+				alert("請升級您的瀏覽器!!!");
+			}
+		}
+
+		function chkfbtn01() {
+			if (xmlHttp.readyState == 1) {
+				span01.style.display = "inline";
+			} else if (xmlHttp.readyState == 4) {
+				span01.style.display = "none";
+				if (xmlHttp.status == 200) {
+
+					//temp01是用正規表示法
+					//temp01 = xmlHttp.responseText;
+					//datas = temp01.match(/\w+/g);
+
+					//temp02是用JSON.parse
+					temp02 = xmlHttp.responseText;
+					var datas = JSON.parse(temp02);
+
+					div01.style.display = "block";
+					if (div01.childNodes.length > 0) {
+						div01.removeChild(div01.childNodes[0]);
+					}
+
+					var eleUl = document.createElement("ul");
+					for (var j = 0; j < datas.length; j++) {
+
+						//將datas塞入
+						var txtLi = document.createTextNode(datas[j]);
+						var eleLi = document.createElement("li");
+						eleLi.appendChild(txtLi);
+						eleLi.addEventListener("mouseover", function() {
+							this.className = 's1'
+						}, false)
+						eleLi.addEventListener("mouseout", function() {
+							this.className = 's2'
+						}, false)
+						eleLi.addEventListener("click", function() {
+							document.formData01.keyword.value = this.firstChild.nodeValue;
+							div01.style.display = "none";
+						}, false)
+						eleUl.appendChild(eleLi);
+					}
+					div01.appendChild(eleUl);
+
+				} else {
+					div01.innerHTML = xmlHttp.status + " - " + xmlHttp.statusText;
+				}
+			}
+		}
+	</script>
+
+</body>
+</html>
