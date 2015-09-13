@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>AjaxDemo</title>
+</head>
+<body>
+	<label for="text01">帳號:</label>
+	<input type="text" id="text01">
+	<br>
+	<br>
+	<label for="text02">密碼:</label>
+	<input type="text" id="text02">
+	<br>
+	<br>
+	<label for="text03">電話:</label>
+	<input type="text" id="text03">
+	<br>
+	<br>
+	<input type="button" id="button01" value="按我">
+	<hr>
+	<div id="div01"></div>
+</body>
+<script type="text/javascript">
+	var text01 = document.getElementById("text01");
+	var text02 = document.getElementById("text02");
+	var text03 = document.getElementById("text03");
+	var button01 = document.getElementById("button01");
+	var div01 = document.getElementById("div01");
+
+	button01.addEventListener("click", xxx)
+	function xxx() {
+
+		var xmlHTTP = new XMLHttpRequest();
+
+		if (xmlHTTP != null) {
+			xmlHTTP.addEventListener("readystatechange", ooo);
+			// 有傳參數時，用 get 和 post 需修改三處，下方兩個方法選一個開註解
+			// 1. get
+			xmlHTTP.open("get", "HelloAge.jsp?name=Doraemon&age=25", true);
+			xmlHTTP.send();
+			// 2. post
+			// xmlHTTP.open("post", "HelloAge.jsp", true);			
+			// xmlHTTP.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+			// xmlHTTP.send("name=Doraemon&age=25");
+
+		} else {
+			alert("請升級您的瀏覽器");
+		}
+
+		function ooo() {
+			if (xmlHTTP.readyState == 4) {
+				if (xmlHTTP.status == 200) {
+					var data = xmlHTTP.responseText;
+					div01.innerHTML = data;
+				} else {
+					div01.innerHTML = xmlHTTP.status + ":" + xmlHTTP.statusText;
+				}
+			}
+		}
+
+	}
+</script>
+
+</html>
