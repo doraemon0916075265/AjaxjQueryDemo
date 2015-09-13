@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>jQueryDemo</title>
+<style type="text/css">
+#wholeBody {
+	width: 80%;
+}
+
+.s1 {
+	background-color: cyan;
+}
+
+.s2 {
+	background-color: pink;
+}
+</style>
+</head>
+<body>
+	<center>
+		<div id="wholeBody">
+			<input type="text" id="text01" value="神"><span id="span01"></span><br> <br> <input type="text" id="text02" value="魔"><span id="span02"></span><br> <br> <input type="text" id="text03" value="之"><span id="span03"></span><br> <br> <input type="text" id="text04" value="塔"><span id="span04"></span><br> <br> <input type="text" id="text05"><span id="span05"></span><br> <br>
+			<hr>
+			<br> <input type="button" id="button01" value="開">
+			<hr>
+			<div id="div01"></div>
+		</div>
+	</center>
+</body>
+
+
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script> -->
+<!-- <script>!window.jQuery && document.write("<script src='scripts/jquery-2.1.4.min.js'><\/script>")</script> -->
+
+<script type="text/javascript" src='scripts/jquery-2.1.4.min.js'></script>
+<script type="text/javascript">
+	(function($) {
+		$('input[type="text"]').blur(check);
+
+		function check() {
+			$('#div01').empty();
+			if ($(this).val() == null || $(this).val().trim().length == 0) {
+				$('#div01').append("你沒輸入");
+			} else {
+				var data = $(this).val();
+				$('#div01').append(data);
+			}
+		}
+	}(jQuery));
+</script>
+
+</html>
