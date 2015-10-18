@@ -30,9 +30,9 @@
 
 	button01.addEventListener("click", xxx)
 	function xxx() {
+		div01.innerHTML = "";
 
 		var xmlHTTP = new XMLHttpRequest();
-
 		if (xmlHTTP != null) {
 			xmlHTTP.addEventListener("readystatechange", ooo);
 			// 有傳參數時，用 get 和 post 需修改三處，下方兩個方法選一個開註解
